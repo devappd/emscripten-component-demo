@@ -50,6 +50,15 @@ export default {
 		// a separate file - better for performance
 		css({ output: 'bundle.css' }),
 
+		// Stringify worker scripts
+		string({
+			include: [
+				'cpp/wasm-worker/*.worker.js',
+				'**/emscripten-component-base/worker/*.preamble.js',
+				'**/emscripten-component-base/worker/*.postamble.js'
+			]
+		}),
+
 		// If you have external dependencies installed from
 		// npm, you'll most likely need these plugins. In
 		// some cases you'll need additional configuration -
@@ -60,11 +69,6 @@ export default {
 			dedupe: ['svelte']
 		}),
 		commonjs(),
-
-		// Stringify worker scripts
-		string({
-			include: ['cpp/wasm-worker/*.worker.js', 'src/emscripten/worker/**/*.preamble.js']
-		}),
 
 		// Copy WASM to destination
 		copy({

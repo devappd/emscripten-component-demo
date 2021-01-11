@@ -1,19 +1,21 @@
 <script>
   import { default as Emscripten } from 'svelte-emscripten';
   import { default as module } from '../cpp/wasm-module/wasm-test.js';
+  import worker from '../cpp/wasm-worker/wasm-test.worker.js';
 
   let instanceList = [
-    {module: module, autorun: true},
-    {module: module, autorun: true}
+    {module: module, worker: null,   autorun: true},
+    {module: null,   worker: worker, autorun: true}
   ];
 
   const maxGlContexts = 16;
 
   function addInstance() {
-    if (instanceList.length < maxGlContexts)
+    if (instanceList.length+1 < maxGlContexts)
       instanceList = [
         ...instanceList, 
-        {module: module, autorun: true}
+        {module: module, worker: null,   autorun: true},
+        {module: null,   worker: worker, autorun: true}
       ];
     else
       console.error(`Not creating more than ${maxGlContexts} components.`);
@@ -28,9 +30,10 @@
   {#each instanceList as instance}
     <Emscripten
       module={instance.module}
+      worker={instance.worker}
       options={{ 
         autorun: instance.autorun,
-        wasmPath: 'module/wasm-test.wasm'
+        wasmPath: instance.worker ? 'worker/wasm-test.wasm' : 'module/wasm-test.wasm'
       }}
     />
   {/each}
