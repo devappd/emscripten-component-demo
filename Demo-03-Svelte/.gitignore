@@ -1,0 +1,6 @@
+node_modules/
+cpp/build-module/
+cpp/build-worker/
+public/build
+
+.DS_Store

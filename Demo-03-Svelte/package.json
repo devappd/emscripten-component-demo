@@ -1,0 +1,40 @@
+{
+  "name": "emscripten-svelte-demo",
+  "version": "0.0.1",
+  "private": "true",
+  "scripts": {
+    "build:js": "rollup -c",
+    "dev:server": "rollup -c -w",
+    "start": "sirv public -c",
+    "build-module:wasm-fast": "emscripten --build --install --no-update",
+    "build-module:wasm": "emscripten --build --install",
+    "build-module": "npm run build-module:wasm && npm run build:js",
+    "dev-module": "npm run build:wasm-fast && npm run dev:server",
+    "build-worker:wasm-fast": "emscripten --build --install --no-update worker",
+    "build-worker:wasm": "emscripten --build --install worker",
+    "build-worker": "npm run build-worker:wasm && npm run build:js",
+    "dev-worker": "npm run build-worker:wasm-fast && npm run dev-worker:server",
+    "build:wasm-fast": "npm run build-module:wasm-fast && npm run build-worker:wasm-fast",
+    "build:wasm": "npm run build-module:wasm && npm run build-worker:wasm",
+    "build": "npm run build:wasm && npm run build:js",
+    "dev": "npm run build:wasm-fast && npm run dev:server"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^16.0.0",
+    "@rollup/plugin-node-resolve": "^10.0.0",
+    "emscripten-build": "git+https://github.com/devappd/emscripten-build-npm#main",
+    "rollup": "^2.3.4",
+    "rollup-plugin-copy": "^3.3.0",
+    "rollup-plugin-css-only": "^3.1.0",
+    "rollup-plugin-livereload": "^2.0.0",
+    "rollup-plugin-string": "^3.0.0",
+    "rollup-plugin-svelte": "^7.0.0",
+    "rollup-plugin-terser": "^7.0.0",
+    "svelte": "^3.0.0",
+    "svelte-resize-observer": "git+https://github.com/devappd/svelte-resize-observer",
+    "svelte-emscripten": "git+https://github.com/devappd/svelte-emscripten"
+  },
+  "dependencies": {
+    "sirv-cli": "^1.0.0"
+  }
+}
